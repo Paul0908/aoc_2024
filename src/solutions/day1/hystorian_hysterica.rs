@@ -1,4 +1,7 @@
-use std::{ops::Mul, process::exit};
+use std::{
+    ops::{Add, Mul},
+    process::exit,
+};
 
 use crate::{solutions::solution::Solution, utils::file_reader::read_file_in_lines};
 
@@ -47,23 +50,17 @@ impl Solution for HystorianHysteria {
         first_team.sort();
         second_team.sort();
 
-        let mut total_distance = 0;
-        first_team
-            .iter()
-            .zip(second_team.iter())
-            .enumerate()
-            .for_each(|(index, (first, second))| {
-                let distance = if first < second {
-                    second - first
-                } else {
-                    first - second
-                };
-                print!(
-                    "current distance {} for step {} - value 1: {} - value 2: {} \n",
-                    distance, index, first, second
-                );
-                total_distance += distance;
-            });
+        let total_distance =
+            first_team
+                .iter()
+                .zip(second_team.iter())
+                .fold(0, |acc, (first, second)| {
+                    acc + if first < second {
+                        second - first
+                    } else {
+                        first - second
+                    }
+                });
         println!("Total distance is: {}", total_distance);
     }
 
@@ -72,41 +69,36 @@ impl Solution for HystorianHysteria {
         first_team.sort();
         second_team.sort();
         let mut second_index = 0;
-        let mut similiarity_score = 0;
-
-        first_team
-            .iter()
-            .enumerate()
-            .for_each(|(index, first_value)| {
-                let mut similiarities_found = 0;
-                let mut second_value: &u32;
-                let mut current_index = second_index;
-                loop {
-                    second_value = second_team.get(current_index).expect("should have value at index");
-                    if second_value.gt(first_value) {
-                        break;
-                    }
-
-                    if second_value.eq(first_value) {
-                        similiarities_found += 1;
-                    } else {
-                        second_index = current_index;
-                    }
-
-                    current_index += 1;
-
-                    if current_index.ge(&second_team.len()) {
-                        break;
-                    }
+        let similiarity_score = first_team.iter().fold(0, |acc, first_value| {
+            let mut similiarities_found = 0;
+            let mut second_value: &u32;
+            let mut current_index = second_index;
+            loop {
+                second_value = second_team
+                    .get(current_index)
+                    .expect("should have value at index");
+                if second_value.gt(first_value) {
+                    break;
                 }
-                print!(
-                    "similiarities for value {} found: {} - first value at pos: {} - second index is currently {} \n",
-                    first_value, similiarities_found, index, second_index
-                );
-                if similiarities_found.gt(&0) {
-                    similiarity_score += first_value.mul(similiarities_found);
+
+                if second_value.eq(first_value) {
+                    similiarities_found += 1;
+                } else {
+                    second_index = current_index;
                 }
-            });
+
+                current_index += 1;
+
+                if current_index.ge(&second_team.len()) {
+                    break;
+                }
+            }
+            if similiarities_found.gt(&0) {
+                acc.add(first_value.mul(similiarities_found))
+            } else {
+                acc
+            }
+        });
 
         print!("total similiarity score is {}", similiarity_score);
     }

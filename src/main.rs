@@ -11,9 +11,9 @@ fn main() {
     for (index, solution) in (&solutions).iter().enumerate() {
         let day = index + 1;
         println!("\n------------ SOLUTION OF DAY {} ------------", day);
-        println!("\n~~~~~~~~~~TASK 1:~~~~~~~~~~ \n");
+        println!("\n~~~~~~~~~~~~~~~~~~TASK 1:~~~~~~~~~~~~~~~~~~ \n");
         solution.solve_first_task();
-        println!("\n~~~~~~~~~~TASK 2:~~~~~~~~~~ \n");    
+        println!("\n~~~~~~~~~~~~~~~~~~TASK 2:~~~~~~~~~~~~~~~~~~ \n");    
         solution.solve_second_task();
         println!("\n")
     }
