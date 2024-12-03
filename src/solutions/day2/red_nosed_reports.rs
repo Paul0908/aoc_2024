@@ -28,7 +28,7 @@ impl RedNosedReports {
         }
     }
 
-    pub fn is_valid_report(report: &Vec<i32>) -> bool {
+    pub fn is_valid_report(report: &[i32]) -> bool {
         let mut optional_direction: Option<Direction> = None;
 
         report.windows(2).all(|levels| {
