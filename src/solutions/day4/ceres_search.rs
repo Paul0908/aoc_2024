@@ -140,7 +140,7 @@ impl Solution for CeresSearch {
         let mut current_words: Vec<Word> = vec![];
         let mut finished_words: Vec<Word> = vec![];
         let lines = utils::file_reader::read_file_in_lines("./src/solutions/day4/word_search.txt")
-            .expect("msg")
+            .expect("should be abled to read lines")
             .filter_map(|line| line.ok())
             .map(|line| line.chars().collect::<Vec<char>>())
             .collect::<Vec<Vec<char>>>();
